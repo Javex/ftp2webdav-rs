@@ -1,0 +1,1 @@
+export WEBDAV_SERVER='https://example.com/remote.php/dav/files'

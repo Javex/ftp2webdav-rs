@@ -1,0 +1,14 @@
+[package]
+name = "ftp2webdav-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.99"
+env_logger = "0.11.8"
+libunftp = "0.21.0"
+log = "0.4.27"
+reqwest_dav = "0.2.1"
+tokio = { version = "1.47.1", features = ["full"] }
+# unftp-sbe-webdav = { path = "unftp-sbe-webdav" }
+unftp-sbe-webdav = { version = "0.1.0" }
