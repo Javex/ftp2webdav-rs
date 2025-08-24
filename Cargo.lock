@@ -1147,8 +1147,7 @@ dependencies = [
 [[package]]
 name = "libunftp"
 version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8270fae0f77279620962f533153fa727a9cf9485dbb79d47eed3086d42b17264"
+source = "git+https://github.com/Javex/libunftp.git?branch=master#ad54cda7d9a8df738430d9af3998e931a35e6caa"
 dependencies = [
  "async-trait",
  "bitflags",

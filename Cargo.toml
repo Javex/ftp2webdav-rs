@@ -1,6 +1,6 @@
 [package]
 name = "ftp2webdav-rs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
@@ -11,3 +11,8 @@ log = "0.4.27"
 tokio = { version = "1.47.1", features = ["full"] }
 # unftp-sbe-webdav = { path = "unftp-sbe-webdav" }
 unftp-sbe-webdav = { version = "0.2.0" }
+
+# TODO: Remove this section once https://github.com/bolcom/libunftp/pull/539
+# has been merged and a new version released for libunftp.
+[patch.crates-io]
+libunftp = { git = "https://github.com/Javex/libunftp.git", branch = "master" }

@@ -1,6 +1,8 @@
-use std::{error::Error, sync::Arc};
+use std::{error::Error, sync::Arc, time::Duration};
 
 use anyhow::{Context, Result};
+use libunftp::options::Shutdown;
+use tokio::signal;
 use unftp_sbe_webdav::{WebDavAuthenticator, WebDavBackend, WebDavUser};
 
 #[tokio::main]
@@ -18,14 +20,16 @@ async fn serve_ftp() -> Result<(), Box<dyn Error>> {
         Box::new(move || WebDavBackend {}),
         Arc::new(webdav_authenticator()?),
     )
+    .shutdown_indicator(shutdown())
     .greeting("Welcome to WebDAV FTP Server")
-    .passive_ports(50000..=65535)
+    .passive_ports(50000..=50005)
     .build()?;
 
-    println!("Starting FTP server on 127.0.0.1:2121");
+    let addr = "0.0.0.0:2121";
+    println!("Starting FTP server on {}", addr);
     println!("Press Ctrl+C to stop the server");
 
-    server.listen("127.0.0.1:2121").await?;
+    server.listen(addr).await?;
 
     Ok(())
 }
@@ -43,4 +47,15 @@ fn init_logger() {
     builder.filter_level(log::LevelFilter::Warn);
     builder.filter_module("unftp_sbe_webdav", log::LevelFilter::Debug);
     builder.init();
+}
+
+async fn shutdown() -> Shutdown {
+    match signal::ctrl_c().await {
+        Ok(()) => {}
+        Err(err) => {
+            eprintln!("Unable to listen for shutdown signal: {}", err);
+            // we also shut down in case of error
+        }
+    }
+    libunftp::options::Shutdown::new().grace_period(Duration::from_secs(5))
 }
